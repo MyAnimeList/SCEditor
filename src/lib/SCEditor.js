@@ -146,6 +146,12 @@ export default function SCEditor(original, userOptions) {
 	var isComposing;
 
 	/**
+	 * If the window.onpageshow already fired.
+	 * @type {boolean}
+	 */
+	var isPageshowFired = false;
+
+	/**
 	 * Timer for valueChanged key handler
 	 * @type {number}
 	 */
@@ -330,6 +336,7 @@ export default function SCEditor(original, userOptions) {
 		handleBackSpace,
 		handleKeyPress,
 		handleFormReset,
+		handlePageShow,
 		handleMouseDown,
 		handleComposition,
 		handleEvent,
@@ -561,6 +568,9 @@ export default function SCEditor(original, userOptions) {
 			dom.attr(wysiwygEditor, 'src', 'about:blank');
 		}
 
+		// Disable sourceEditor while loading page
+		sourceEditor.disabled = !isPageshowFired;
+
 		// Add the editor to the container
 		dom.appendChild(editorContainer, wysiwygEditor);
 		dom.appendChild(editorContainer, sourceEditor);
@@ -666,7 +676,7 @@ export default function SCEditor(original, userOptions) {
 		}
 
 		dom.on(window, 'pagehide', base.updateOriginal);
-		dom.on(window, 'pageshow', handleFormReset);
+		dom.on(window, 'pageshow', handlePageShow);
 		dom.on(wysiwygBody, 'keypress', handleKeyPress);
 		dom.on(wysiwygBody, 'keydown', handleKeyDown);
 		dom.on(wysiwygBody, 'keydown', handleBackSpace);
@@ -1411,7 +1421,7 @@ export default function SCEditor(original, userOptions) {
 		}
 
 		dom.off(window, 'pagehide', base.updateOriginal);
-		dom.off(window, 'pageshow', handleFormReset);
+		dom.off(window, 'pageshow', handlePageShow);
 		dom.remove(sourceEditor);
 		dom.remove(toolbar);
 		dom.remove(editorContainer);
@@ -2589,6 +2599,17 @@ export default function SCEditor(original, userOptions) {
 	 */
 	handleFormReset = function () {
 		base.val(original.value);
+	};
+
+	/**
+	 * Handles pageshow event
+	 * @private
+	 */
+	handlePageShow = function () {
+		handleFormReset();
+		// Disable sourceEditor while loading page
+		isPageshowFired = true;
+		sourceEditor.disabled = !isPageshowFired;
 	};
 
 	/**

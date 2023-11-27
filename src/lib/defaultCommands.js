@@ -520,7 +520,7 @@ var defaultCmds = {
 
 			dom.appendChild(content, _tmpl('email', {
 				label: editor._('E-mail:'),
-				desc: editor._('Description (optional):'),
+				desc: editor._('Name (optional):'),
 				insert: editor._('Insert')
 			}, true));
 
@@ -568,7 +568,7 @@ var defaultCmds = {
 
 			dom.appendChild(content, _tmpl('link', {
 				url: editor._('URL:'),
-				desc: editor._('Description (optional):'),
+				desc: editor._('Name (optional):'),
 				ins: editor._('Insert')
 			}, true));
 
@@ -743,7 +743,7 @@ var defaultCmds = {
 			var	content = dom.createElement('div');
 
 			dom.appendChild(content, _tmpl('youtubeMenu', {
-				label: editor._('Video URL:'),
+				label: editor._('YouTube URL:'),
 				insert: editor._('Insert')
 			}, true));
 
